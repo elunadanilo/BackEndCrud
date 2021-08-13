@@ -19,9 +19,12 @@ namespace AccessData
         public string Apellidos { get; set; }
         public string Dpi { get; set; }
         public string Direccion { get; set; }
-        public bool Genero { get; set; }
+        public string Genero { get; set; }
         public System.DateTime FechaNacimiento { get; set; }
         public string Escolaridad { get; set; }
         public bool Activo { get; set; }
+    
+        public virtual TblPersona TblPersona1 { get; set; }
+        public virtual TblPersona TblPersona2 { get; set; }
     }
 }

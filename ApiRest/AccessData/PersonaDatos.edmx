@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DbPersonaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DbPersonaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="TblPersona">
           <Key>
             <PropertyRef Name="IdPersona" />
@@ -14,16 +14,31 @@
           <Property Name="Apellidos" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Dpi" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="Direccion" Type="varchar" MaxLength="1000" Nullable="false" />
-          <Property Name="Genero" Type="bit" Nullable="false" />
+          <Property Name="Genero" Type="char" MaxLength="1" Nullable="false" />
           <Property Name="FechaNacimiento" Type="date" Nullable="false" />
           <Property Name="Escolaridad" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Activo" Type="bit" Nullable="false" />
         </EntityType>
+        <Association Name="FK_TblPersona_TblPersona">
+          <End Role="TblPersona" Type="Self.TblPersona" Multiplicity="1" />
+          <End Role="TblPersona1" Type="Self.TblPersona" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="TblPersona">
+              <PropertyRef Name="IdPersona" />
+            </Principal>
+            <Dependent Role="TblPersona1">
+              <PropertyRef Name="IdPersona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="DbPersonaModelStoreContainer">
           <EntitySet Name="TblPersona" EntityType="Self.TblPersona" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_TblPersona_TblPersona" Association="Self.FK_TblPersona_TblPersona">
+            <End Role="TblPersona" EntitySet="TblPersona" />
+            <End Role="TblPersona1" EntitySet="TblPersona" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DbPersonaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -36,14 +51,32 @@
           <Property Name="Apellidos" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Dpi" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Direccion" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Genero" Type="Boolean" Nullable="false" />
+          <Property Name="Genero" Type="String" Nullable="false" />
           <Property Name="FechaNacimiento" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Escolaridad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="TblPersona1" Relationship="DbPersonaModel.FK_TblPersona_TblPersona" FromRole="TblPersona" ToRole="TblPersona1" />
+          <NavigationProperty Name="TblPersona2" Relationship="DbPersonaModel.FK_TblPersona_TblPersona" FromRole="TblPersona1" ToRole="TblPersona" />
         </EntityType>
         <EntityContainer Name="DbPersonaEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="TblPersona" EntityType="Self.TblPersona" />
+          <AssociationSet Name="FK_TblPersona_TblPersona" Association="DbPersonaModel.FK_TblPersona_TblPersona">
+            <End Role="TblPersona" EntitySet="TblPersona" />
+            <End Role="TblPersona1" EntitySet="TblPersona" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_TblPersona_TblPersona">
+          <End Type="DbPersonaModel.TblPersona" Role="TblPersona" Multiplicity="1" />
+          <End Type="DbPersonaModel.TblPersona" Role="TblPersona1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="TblPersona">
+              <PropertyRef Name="IdPersona" />
+            </Principal>
+            <Dependent Role="TblPersona1">
+              <PropertyRef Name="IdPersona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
